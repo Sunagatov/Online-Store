@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class PutUserRequestValidatorTest {
+public class PutUsersRequestValidatorTest {
 
     private PutUsersRequestValidator validator;
 
