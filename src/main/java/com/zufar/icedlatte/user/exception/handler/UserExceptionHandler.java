@@ -4,6 +4,7 @@ import com.zufar.icedlatte.common.exception.handler.ApiErrorResponseCreator;
 import com.zufar.icedlatte.common.exception.handler.ErrorDebugMessageCreator;
 import com.zufar.icedlatte.common.exception.dto.ApiErrorResponse;
 import com.zufar.icedlatte.user.exception.InvalidOldPasswordException;
+import com.zufar.icedlatte.user.exception.PutUsersBadRequestException;
 import com.zufar.icedlatte.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,17 @@ public class UserExceptionHandler {
     public ApiErrorResponse handleInvalidOldPasswordException(final InvalidOldPasswordException exception) {
         ApiErrorResponse apiErrorResponse = apiErrorResponseCreator.buildResponse(exception, HttpStatus.UNAUTHORIZED);
         log.warn("Handle user's invalid old password exception: failed: message: {}, debugMessage: {}",
+                apiErrorResponse.message(), errorDebugMessageCreator.buildErrorDebugMessage(exception));
+        return apiErrorResponse;
+    }
+
+    // TASK: IN PROGRESS
+    // TODO: do message more clear with
+    @ExceptionHandler({PutUsersBadRequestException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handlePutUsersBadRequestException(final PutUsersBadRequestException exception) {
+        ApiErrorResponse apiErrorResponse = apiErrorResponseCreator.buildResponse(exception, HttpStatus.BAD_REQUEST);
+        log.warn("Handle user's invalid property exception: failed: message: {}, debugMessage: {}",
                 apiErrorResponse.message(), errorDebugMessageCreator.buildErrorDebugMessage(exception));
         return apiErrorResponse;
     }

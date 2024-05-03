@@ -1,0 +1,381 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: zufar.sunagatov@gmail.com
+    name: Iced Latte Support
+  description: API for accessing user profiles and related operations in the Iced-Latte
+    platform
+  title: Iced Latte User API
+  version: 1.0.0
+servers:
+- description: Local development server
+  url: http://localhost:8083
+- description: Production server
+  url: https://iced-latte.uk/backend
+tags:
+- description: Operations related to user profiles
+  name: User
+paths:
+  /api/v1/users:
+    delete:
+      description: Delete a user profile for the given user ID
+      operationId: deleteUserById
+      responses:
+        "200":
+          description: An information about successful deletion of the user by given
+            the userId
+        "404":
+          description: User not found
+        "400":
+          description: Invalid userId provided
+        "401":
+          description: Unauthorized access. Authentication required
+        "500":
+          description: Internal Server Error
+      summary: Delete an user by its ID
+      tags:
+      - User
+      x-accepts: application/json
+    get:
+      description: Fetches an user's details
+      operationId: getUserById
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+          description: A user object containing detailed user information
+        "400":
+          description: Invalid userId provided
+        "401":
+          description: Unauthorized access. Authentication required
+        "404":
+          description: User not found
+        "500":
+          description: Internal Server Error
+      summary: Get an user by its ID
+      tags:
+      - User
+      x-accepts: application/json
+    patch:
+      description: Change the password for a user
+      operationId: ChangeUserPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeUserPasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: Password changed successfully
+        "400":
+          content:
+            application/json:
+              examples:
+                invalidPassword:
+                  value:
+                    message: "Password must be at least 8 characters long and contain\
+                      \ at least one letter, one digit, and may include special characters\
+                      \ @$!%*?&"
+          description: Validation error
+        "401":
+          description: Unauthorized access. Authentication required
+        "404":
+          description: User not found
+        "500":
+          description: Internal Server Error
+      summary: Change a user's password
+      tags:
+      - User
+      x-content-type: application/json
+      x-accepts: application/json
+    put:
+      description: Edit a user's details for the given user ID
+      operationId: editUserById
+      requestBody:
+        content:
+          application/json:
+            examples:
+              update-multiple:
+                summary: Edit an user's details
+                value:
+                  firstName: John
+                  lastName: Doe
+                  email: johndoe@example.com
+            schema:
+              $ref: '#/components/schemas/UpdateUserAccountRequest'
+        description: Payload containing updated user's details
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+          description: An updated user object containing detailed user information
+        "400":
+          description: Invalid userId provided
+        "401":
+          description: Unauthorized access. Authentication required
+        "404":
+          description: User not found
+        "500":
+          description: Internal Server Error
+      summary: Edit an user's details by its ID
+      tags:
+      - User
+      x-content-type: application/json
+      x-accepts: application/json
+  /api/v1/users/password/reset:
+    post:
+      description: Reset user password
+      operationId: resetUserPassword
+      responses:
+        "200":
+          description: Reset user password request confirm successfully
+        "401":
+          description: Unauthorized access. Authentication required
+        "500":
+          description: Internal Server Error
+      summary: Reset user password
+      tags:
+      - User
+      x-accepts: application/json
+  /api/v1/users/password/reset/confirm:
+    post:
+      description: Reset user password confirm
+      operationId: confirmResetUserPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmEmailRequest'
+        required: true
+      responses:
+        "200":
+          description: Reset user password confirm successfully
+        "401":
+          description: Unauthorized access. Authentication required
+        "500":
+          description: Internal Server Error
+      summary: Reset user password confirm
+      tags:
+      - User
+      x-content-type: application/json
+      x-accepts: application/json
+  /api/v1/users/avatar:
+    delete:
+      description: Delete the user's avatar image
+      operationId: deleteUserAvatar
+      responses:
+        "200":
+          description: User avatar deleted successfully
+        "401":
+          description: Unauthorized access. Authentication required
+        "500":
+          description: Internal Server Error
+      summary: Delete user avatar
+      tags:
+      - User
+      x-accepts: application/json
+    get:
+      description: Get the link to the user's avatar image
+      operationId: getUserAvatarLink
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: User avatar link retrieved successfully
+        "401":
+          description: Unauthorized access. Authentication required
+        "500":
+          description: Internal Server Error
+      summary: Get user avatar link
+      tags:
+      - User
+      x-accepts: application/json
+    post:
+      description: Upload a user's avatar image
+      operationId: uploadUserAvatar
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/uploadUserAvatar_request'
+        required: true
+      responses:
+        "200":
+          description: User avatar uploaded successfully
+        "401":
+          description: Unauthorized access. Authentication required
+        "500":
+          description: Internal Server Error
+      summary: Upload user avatar
+      tags:
+      - User
+      x-content-type: multipart/form-data
+      x-accepts: application/json
+components:
+  schemas:
+    UpdateUserAccountRequest:
+      description: A user profile object details to update
+      example:
+        firstName: firstName
+        lastName: lastName
+        phoneNumber: phoneNumber
+        address:
+          country: country
+          city: city
+          line: line
+          postcode: postcode
+        birthDate: 2000-01-23
+      properties:
+        firstName:
+          description: The first name of the user
+          type: string
+        lastName:
+          description: The last name of the user
+          type: string
+        birthDate:
+          description: The birth date of the user
+          format: date
+          type: string
+        phoneNumber:
+          description: The phone number of the user
+          type: string
+        address:
+          $ref: '#/components/schemas/AddressDto'
+      required:
+      - firstName
+      - lastName
+      type: object
+    ChangeUserPasswordRequest:
+      description: Payload for changing user password
+      example:
+        oldPassword: oldPassword
+        newPassword: newPassword
+      properties:
+        newPassword:
+          description: "The new password for the user. Password must be at least 8\
+            \ characters long and contain at least one letter, one digit, and may\
+            \ include special characters @$!%*?&"
+          pattern: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$"
+          type: string
+        oldPassword:
+          description: "The current password for the user. Password must be at least\
+            \ 8 characters long and contain at least one letter, one digit, and may\
+            \ include special characters @$!%*?&"
+          pattern: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$"
+          type: string
+      required:
+      - newPassword
+      - oldPassword
+      type: object
+    UserDto:
+      description: A user profile in the Iced-Latte system
+      example:
+        firstName: firstName
+        lastName: lastName
+        phoneNumber: phoneNumber
+        address:
+          country: country
+          city: city
+          line: line
+          postcode: postcode
+        stripeCustomerToken: stripeCustomerToken
+        avatarLink: avatarLink
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        birthDate: 2000-01-23
+        email: email
+      properties:
+        id:
+          description: The unique identifier for the user
+          format: uuid
+          type: string
+        firstName:
+          description: The first name of the user. First name should have a length
+            between 2 and 128 characters
+          maxLength: 128
+          minLength: 2
+          type: string
+        lastName:
+          description: The last name of the user. Last name should have a length between
+            2 and 128 characters
+          maxLength: 128
+          minLength: 2
+          type: string
+        birthDate:
+          description: The birth date of the user
+          format: date
+          type: string
+        phoneNumber:
+          description: The phone number of the user
+          type: string
+        stripeCustomerToken:
+          description: The Stripe customer token associated with the user
+          type: string
+        email:
+          description: The email address of the user
+          format: email
+          type: string
+        address:
+          $ref: '#/components/schemas/AddressDto'
+        avatarLink:
+          description: The avatar url of the user
+          type: string
+      required:
+      - email
+      - firstName
+      - lastName
+      type: object
+    AddressDto:
+      example:
+        country: country
+        city: city
+        line: line
+        postcode: postcode
+      properties:
+        country:
+          description: Country should have a length between 2 and 128 characters
+          maxLength: 128
+          minLength: 2
+          type: string
+        city:
+          description: City should have a length between 2 and 128 characters
+          maxLength: 128
+          minLength: 2
+          type: string
+        line:
+          description: Line should have a length between 2 and 128 characters
+          maxLength: 128
+          minLength: 2
+          type: string
+        postcode:
+          description: Postcode should have a length between 2 and 128 characters
+          maxLength: 128
+          minLength: 2
+          type: string
+      required:
+      - city
+      - country
+      - line
+      - postcode
+      type: object
+    ConfirmEmailRequest:
+      example:
+        token: token
+      properties:
+        token:
+          type: string
+      type: object
+    uploadUserAvatar_request:
+      properties:
+        file:
+          format: binary
+          type: string
+      type: object
+
