@@ -7,7 +7,6 @@ import com.zufar.icedlatte.user.exception.PutUsersBadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PutUserRequestValidator {
+public class PutUsersRequestValidator {
 
     private final int MIN_LENGTH = 2;
     private final int MAX_LENGTH = 128;

@@ -3,8 +3,7 @@ package com.zufar.icedlatte.user.validate;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.zufar.icedlatte.user.exception.PutUsersBadRequestException;
-import com.zufar.icedlatte.user.validator.PutUserRequestValidator;
-import org.junit.jupiter.api.BeforeAll;
+import com.zufar.icedlatte.user.validator.PutUsersRequestValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PutUserRequestValidatorTest {
 
-    private PutUserRequestValidator validator;
+    private PutUsersRequestValidator validator;
 
     @BeforeEach
     void setUp() {
-        validator = new PutUserRequestValidator();
+        validator = new PutUsersRequestValidator();
     }
 
     @Test
