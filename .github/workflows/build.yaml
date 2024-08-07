@@ -19,7 +19,7 @@ jobs:
 
       - name: Create Tag
         id: tag
-        run: echo "tag=frontend-${{ github.ref_name }}-$(git rev-parse --short HEAD)-$(date +%s)" >> $GITHUB_OUTPUT
+        run: echo "tag=backend-${{ github.ref_name }}-$(git rev-parse --short HEAD)-$(date +%s)" >> $GITHUB_OUTPUT
         timeout-minutes: 5
 
       - name: Login to ECR
