@@ -22,7 +22,7 @@ public class AuthorizationServerUrlCreator {
                 "include_granted_scopes=true&" +
                 "response_type=code&" +
                 "state=state_parameter_passthrough_value&" +
-                "redirect_uri=https://iced-latte.uk/backend/api/v1/auth/google/callback&" +
+                "redirect_uri=https://il.pride.improwised.local/backend/api/v1/auth/google/callback&" +
                 "client_id=" + clientId;
     }
 }

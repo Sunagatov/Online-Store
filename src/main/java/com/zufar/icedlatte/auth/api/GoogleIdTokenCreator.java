@@ -41,7 +41,7 @@ public class GoogleIdTokenCreator {
 
     private TokenResponse getTokenResponse(String authorizationCode) throws IOException, GeneralSecurityException {
         return createGoogleAuthorizationCodeFlow().newTokenRequest(authorizationCode)
-                .setRedirectUri("https://iced-latte.uk/backend/api/v1/auth/google/callback")
+                .setRedirectUri("https://il.pride.improwised.local/backend/api/v1/auth/google/callback")
                 .execute();
     }
 

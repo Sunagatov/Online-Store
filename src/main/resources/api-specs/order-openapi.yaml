@@ -11,7 +11,7 @@ info:
 servers:
   - url: "http://localhost:8083"
     description: "Local development server"
-  - url: "https://iced-latte.uk/backend"
+  - url: "https://il.pride.improwised.local/backend"
     description: "Production server"
 
 tags:
@@ -75,7 +75,7 @@ components:
     OrderStatus:
       type: string
       description: "Order status: 'CREATED' - new order recently created, 'PAID' - order was paid, 'DELIVERY' - order was sent, 'FINISHED' - order was delivered"
-      enum: [ CREATED, PAID, DELIVERY, FINISHED ]
+      enum: [CREATED, PAID, DELIVERY, FINISHED]
 
     CreateNewOrderRequestDto:
       type: "object"
@@ -107,7 +107,7 @@ components:
           format: "uuid"
           description: "The unique identifier for the order"
         status:
-          $ref: '#/components/schemas/OrderStatus'
+          $ref: "#/components/schemas/OrderStatus"
         createdAt:
-            type: "string"
-            format: "date-time"
+          type: "string"
+          format: "date-time"

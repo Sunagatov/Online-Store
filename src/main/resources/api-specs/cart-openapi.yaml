@@ -11,7 +11,7 @@ info:
 servers:
   - url: "http://localhost:8083"
     description: "Local development server"
-  - url: "https://iced-latte.uk/backend"
+  - url: "https://il.pride.improwised.local/backend"
     description: "Production server"
 
 tags:
@@ -35,7 +35,11 @@ paths:
             examples:
               add-multiple:
                 summary: "Add Multiple Items"
-                value: {"items": [{"productId": "a1b2c3d4", "productQuantity": 2}]}
+                value:
+                  {
+                    "items":
+                      [{ "productId": "a1b2c3d4", "productQuantity": 2 }],
+                  }
       responses:
         "200":
           description: "Items added successfully."
@@ -64,7 +68,11 @@ paths:
             examples:
               increment-quantity:
                 summary: "Increment Quantity"
-                value: {"shoppingCartItemId": "e5f6g7h8", "productQuantityChange": 1}
+                value:
+                  {
+                    "shoppingCartItemId": "e5f6g7h8",
+                    "productQuantityChange": 1,
+                  }
       responses:
         "200":
           description: "Shopping cart item quantity was updated successfully."

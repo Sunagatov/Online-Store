@@ -33,7 +33,7 @@
 
 ## Introduction
 
-**🟥 Iced-Latte (Backend)** is a non-profit sandbox project where a team of IT enthusiasts are working on creating a modern marketplace (https://iced-latte.uk/) for selling coffee in order to pump up their soft and hard skills and have fun working on an interesting project.
+**🟥 Iced-Latte (Backend)** is a non-profit sandbox project where a team of IT enthusiasts are working on creating a modern marketplace (https://il.pride.improwised.local/) for selling coffee in order to pump up their soft and hard skills and have fun working on an interesting project.
 
 🟥 It's crucial to note that we operate without financial support from any party, and we don't compensate anyone financially either. Our efforts are fuelled solely by passion and dedication.
 
@@ -107,7 +107,7 @@ The main point of interaction is the [Issues page](https://github.com/Sunagatov/
 
 The bussiness docs are here [Docs](https://drive.google.com/drive/folders/1vvfXy6n4cz01JjNyTgoYG0g6EIRvyHDw?usp=share_link).
 
-Swagger REST APIs contracts described [here](https://iced-latte.uk/backend/api/docs/swagger-ui/index.html).
+Swagger REST APIs contracts described [here](https://il.pride.improwised.local/backend/api/docs/swagger-ui/index.html).
 
 ### 😎 I want to write some code
 

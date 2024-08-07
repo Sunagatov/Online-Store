@@ -11,7 +11,7 @@ info:
 servers:
   - url: "http://localhost:8083"
     description: "Local development server"
-  - url: "https://iced-latte.uk/backend"
+  - url: "https://il.pride.improwised.local/backend"
     description: "Production server"
 
 tags:
@@ -20,7 +20,6 @@ tags:
 
 paths:
   /api/v1/users:
-
     get:
       tags:
         - "User"
@@ -59,7 +58,12 @@ paths:
             examples:
               update-multiple:
                 summary: "Edit an user's details"
-                value: { "firstName": "John", "lastName": "Doe", "email": "johndoe@example.com" }
+                value:
+                  {
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "email": "johndoe@example.com",
+                  }
       responses:
         "200":
           description: "An updated user object containing detailed user information"
@@ -97,7 +101,10 @@ paths:
             application/json:
               examples:
                 invalidPassword:
-                  value: { "message": "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&" }
+                  value:
+                    {
+                      "message": "Password must be at least 8 characters long and contain at least one letter, one digit, and may include special characters @$!%*?&",
+                    }
         "401":
           description: "Unauthorized access. Authentication required"
         "404":
@@ -225,11 +232,11 @@ components:
         firstName:
           type: "string"
           description: "The first name of the user"
-          x-field-extra-annotation: "@jakarta.validation.constraints.NotNull(message = \"First name is the mandatory attribute\")"
+          x-field-extra-annotation: '@jakarta.validation.constraints.NotNull(message = "First name is the mandatory attribute")'
         lastName:
           type: "string"
           description: "The last name of the user"
-          x-field-extra-annotation: "@jakarta.validation.constraints.NotNull(message = \"Last name is the mandatory attribute\")"
+          x-field-extra-annotation: '@jakarta.validation.constraints.NotNull(message = "Last name is the mandatory attribute")'
         birthDate:
           type: "string"
           description: "The birth date of the user"
