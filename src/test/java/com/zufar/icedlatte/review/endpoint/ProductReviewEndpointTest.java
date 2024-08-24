@@ -102,15 +102,16 @@ class ProductReviewEndpointTest {
     }
 
     @Test
-    @DisplayName("Should fetch reviews and ratings with default pagination and sorting for unauthorized user")
-    void shouldFetchReviewsAndRatingsWithDefaultPaginationAndSortingForAnonymous() {
+    @DisplayName("Should fetch reviews and ratings with default pagination and sorting with page size for unauthorized user")
+    void shouldFetchReviewsAndRatingsWithDefaultPaginationAndSortingWithPageSizeForAnonymous() {
         // No authorization is required
         specification = given()
                 .log().all(true)
                 .port(port)
                 .basePath(ProductReviewEndpoint.PRODUCT_REVIEW_URL)
                 .contentType(ContentType.JSON)
-                .accept(ContentType.JSON);
+                .accept(ContentType.JSON)
+                .queryParams("size", 10);
 
         Response response = given(specification)
                 .get("/{productId}/reviews", AMERICANO_ID);
