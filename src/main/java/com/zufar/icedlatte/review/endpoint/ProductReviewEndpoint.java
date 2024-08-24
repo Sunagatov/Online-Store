@@ -70,7 +70,7 @@ public class ProductReviewEndpoint implements com.zufar.icedlatte.openapi.produc
     @GetMapping(value = "/{productId}/reviews")
     public ResponseEntity<ProductReviewsAndRatingsWithPagination> getProductReviewsAndRatings(@PathVariable final UUID productId,
                                                                                               @RequestParam(name = "page", defaultValue = "0") final Integer pageNumber,
-                                                                                              @RequestParam(name = "size", defaultValue = "10") final Integer pageSize,
+                                                                                              @RequestParam(name = "size") final Integer pageSize,
                                                                                               @RequestParam(name = "sort_attribute", defaultValue = "createdAt") final String sortAttribute,
                                                                                               @RequestParam(name = "sort_direction", defaultValue = "desc") final String sortDirection,
                                                                                               @RequestParam(name = "product_ratings", required = false) List<Integer> productRatings) {
