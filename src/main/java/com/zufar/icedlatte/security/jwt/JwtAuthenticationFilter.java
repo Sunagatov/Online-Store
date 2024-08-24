@@ -88,6 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean isSecuredUrl(HttpServletRequest request) {
         if (isUnauthorizedGetReviewsUrl(request)) return false;
+        if (isUnauthorizedPostStripeWebhookUrl(request)) return false;
         return Stream.of(SecurityConstants.SHOPPING_CART_URL, SecurityConstants.PAYMENT_URL,
                 SecurityConstants.USERS_URL, SecurityConstants.FAVOURITES_URL,
                 SecurityConstants.AUTH_URL, SecurityConstants.ORDERS_URL,
@@ -100,5 +101,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .anyMatch(securedUrl -> new AntPathRequestMatcher(securedUrl).matches(request));
 
         return isReviewsUrl && HttpMethod.GET.name().equals(request.getMethod());
+    }
+
+    private boolean isUnauthorizedPostStripeWebhookUrl(HttpServletRequest request) {
+        boolean isStripeWebhookUrl = new AntPathRequestMatcher(SecurityConstants.STRIPE_WEBHOOK_URL)
+                .matches(request);
+
+        return isStripeWebhookUrl && HttpMethod.POST.name().equals(request.getMethod());
     }
 }

@@ -186,6 +186,24 @@ class ProductReviewEndpointTest {
                 .body("ratingMap.star5", equalTo(0));
     }
 
+
+    @Test
+    @DisplayName("Reviews and ratings with default pagination and sorting for unauthorized user. Should return 400 Bad Request")
+    void shouldReturnBadRequestForDefaultPaginationAndSortingForAnonymous() {
+        // No authorization is required
+        specification = given()
+                .log().all(true)
+                .port(port)
+                .basePath(ProductReviewEndpoint.PRODUCT_REVIEW_URL)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON);
+
+        Response response = given(specification)
+                .get("/{productId}/reviews", AMERICANO_ID);
+
+        assertRestApiBadRequestResponse(response, FAILED_REVIEW_SCHEMA);
+    }
+
     @Test
     @DisplayName("Should return 404 Not Found on attempt to add review for invalid product ID")
     void shouldReturnNotFoundOnAttemptToAddNonExistentProduct() {

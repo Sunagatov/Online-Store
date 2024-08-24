@@ -1,10 +1,13 @@
 CREATE TABLE IF NOT EXISTS payment
 (
-    payment_id        BIGSERIAL PRIMARY KEY,
-    payment_intent_id VARCHAR(64) NOT NULL,
-    shopping_cart_id  UUID        NOT NULL,
-    items_total_price DECIMAL     NOT NULL CHECK (items_total_price > 0),
-    status            VARCHAR(32),
-    description       TEXT,
-    UNIQUE (payment_intent_id, shopping_cart_id)
+    id          UUID            PRIMARY KEY,
+    order_id    UUID            NOT NULL,
+    session_id  TEXT            NOT NULL,
+    status      VARCHAR(32),
+    description TEXT,
+
+    CONSTRAINT fk_order
+        FOREIGN KEY (order_id)
+            REFERENCES orders (id)
+            ON DELETE CASCADE
 );

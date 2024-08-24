@@ -34,13 +34,14 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(SecurityConstants.SHOPPING_CART_URL).authenticated()
-                                .requestMatchers(SecurityConstants.PAYMENT_URL).authenticated()
                                 .requestMatchers(SecurityConstants.USERS_URL).authenticated()
                                 .requestMatchers(SecurityConstants.FAVOURITES_URL).authenticated()
                                 .requestMatchers(SecurityConstants.ORDERS_URL).authenticated()
                                 .requestMatchers(SecurityConstants.SHIPPING_URL).authenticated()
                                 .requestMatchers(HttpMethod.GET, SecurityConstants.ALLOWED_PRODUCT_REVIEWS_URLS.toArray(new String[0])).permitAll()
                                 .requestMatchers(HttpMethod.GET, SecurityConstants.AUTH_3PART_URL).permitAll()
+                                .requestMatchers(HttpMethod.POST, SecurityConstants.STRIPE_WEBHOOK_URL).permitAll()
+                                .requestMatchers(SecurityConstants.PAYMENT_URL).authenticated()
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

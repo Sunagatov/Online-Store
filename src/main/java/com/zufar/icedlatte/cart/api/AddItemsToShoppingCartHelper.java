@@ -58,13 +58,13 @@ public class AddItemsToShoppingCartHelper {
         Map<UUID, Integer> productsWithQuantity = itemsToAdd.stream()
                 .collect(Collectors.toMap(NewShoppingCartItemDto::getProductId, NewShoppingCartItemDto::getProductQuantity));
 
-        Set<UUID> existedProductIds = shoppingCart.getItems().stream()
+        Set<UUID> existingProductIds = shoppingCart.getItems().stream()
                 .map(ShoppingCartItem::getProductInfo)
                 .map(ProductInfo::getProductId)
                 .collect(Collectors.toSet());
 
         Set<UUID> newProductIds = productsWithQuantity.keySet().stream()
-                .filter(productId -> !existedProductIds.contains(productId))
+                .filter(productId -> !existingProductIds.contains(productId))
                 .collect(Collectors.toSet());
 
         return productInfoRepository.findAllById(newProductIds).stream()

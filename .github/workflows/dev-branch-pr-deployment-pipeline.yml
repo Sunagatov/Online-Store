@@ -45,7 +45,7 @@ jobs:
             docker stop ${{ vars.DOCKER_CONTAINER_NAME }} || true
             docker rm ${{ vars.DOCKER_CONTAINER_NAME }} || true
             docker rmi ${{ vars.DOCKER_HUB_ACCOUNT_NAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest-version || true
-            docker pull ${{ vars.DOCKER_HUB_ACCOUNT_NAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest-version 
+            docker pull ${{ vars.DOCKER_HUB_ACCOUNT_NAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest-version
             docker run -d \
               --name ${{ vars.DOCKER_CONTAINER_NAME }} \
               --network=${{ vars.DOCKER_NETWORK }} \
@@ -69,7 +69,7 @@ jobs:
               -e REDIS_PORT=${{ vars.REDIS_PORT }} \
               -e SPRING_AI_OPENAI_API_KEY=${{ secrets.SPRING_AI_OPENAI_API_KEY }} \
               -e STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} \
+              -e STRIPE_WEBHOOK_SECRET=${{ secrets.STRIPE_WEBHOOK_SECRET }} \
               -v ${{ vars.APP_DATA_PATH_ON_THE_REMOTE_SERVER }}:/usr/app/logs \
               -v ${{ vars.APP_DATA_PATH_ON_THE_REMOTE_SERVER }}/products:/usr/app/products \
               zufarexplainedit/iced-latte-backend:latest-version
-            

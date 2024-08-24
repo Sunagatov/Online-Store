@@ -48,6 +48,7 @@ services:
       GOOGLE_AUTH_CLIENT_SECRET: vbfgngfdndgndgndgndgndgndgndg
       GOOGLE_AUTH_REDIRECT_URI: vbfgngfdndgndgndgndgndgndgndg
       STRIPE_SECRET_KEY: sk_test_51PJxciHA4AopuQMMeXaJNETc7RUAITeMTKJei07L8iEHrRiWLQalKsr756dnOzmKPUXufkUVNUSaiPyktJG9dGY500x0cM817f
+      STRIPE_WEBHOOK_SECRET: whsec_81c734081f94172b76e5dede103b67b3fcfc69220fa0747a12d67244c9ddb57d
     build:
       context: .
       dockerfile: Dockerfile.local

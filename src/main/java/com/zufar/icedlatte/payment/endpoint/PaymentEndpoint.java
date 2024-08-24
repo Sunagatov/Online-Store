@@ -1,24 +1,14 @@
 package com.zufar.icedlatte.payment.endpoint;
 
-import com.stripe.exception.StripeException;
-import com.zufar.icedlatte.cart.api.ShoppingCartManager;
-import com.zufar.icedlatte.openapi.dto.CreatePaymentRequest;
-import com.zufar.icedlatte.openapi.dto.CreateCardDetailsTokenRequest;
-import com.zufar.icedlatte.openapi.dto.ProcessedPaymentDetailsDto;
-import com.zufar.icedlatte.openapi.dto.ProcessedPaymentWithClientSecretDto;
-import com.zufar.icedlatte.payment.api.StripeLineItemsConverter;
-import com.zufar.icedlatte.payment.api.StripeShippingOptionsProvider;
-import com.zufar.icedlatte.payment.api.customer.CardDetailsProcessor;
-import com.zufar.icedlatte.payment.api.event.PaymentEventProcessor;
-import com.zufar.icedlatte.payment.api.intent.PaymentProcessor;
-import com.zufar.icedlatte.payment.api.intent.PaymentRetriever;
-import com.zufar.icedlatte.payment.dto.PaymentSession;
+import com.zufar.icedlatte.openapi.dto.SessionWithClientSecretDto;
+import com.zufar.icedlatte.payment.api.PaymentProcessor;
+import com.zufar.icedlatte.payment.api.StripeSessionProvider;
+import com.zufar.icedlatte.payment.api.WebhookEventProcessor;
 import com.zufar.icedlatte.payment.dto.PaymentSessionStatus;
-import com.zufar.icedlatte.security.api.SecurityPrincipalProvider;
-import com.zufar.icedlatte.user.api.SingleUserProvider;
+import com.zufar.icedlatte.payment.exception.StripeSessionRetrievalException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import com.stripe.Stripe;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,105 +27,33 @@ public class PaymentEndpoint implements com.zufar.icedlatte.openapi.payment.api.
 
     public static final String PAYMENT_URL = "/api/v1/payment";
 
-    private final PaymentRetriever paymentRetriever;
     private final PaymentProcessor paymentProcessor;
-    private final PaymentEventProcessor paymentEventProcessor;
-    private final CardDetailsProcessor cardDetailsProcessor;
-    private final SecurityPrincipalProvider securityPrincipalProvider;
-    private final ShoppingCartManager shoppingCartManager;
-    private final SingleUserProvider singleUserProvider;
-    private final StripeShippingOptionsProvider stripeShippingOptionsProvider;
-    private final StripeLineItemsConverter stripeLineItemsConverter;
+    private final WebhookEventProcessor webhookEventProcessor;
+    private final StripeSessionProvider stripeSessionProvider;
 
-    @Value("${stripe.secret-key}")
-    public String secretKey;
-
-    // TEST CARD: 4242424242424242
     @GetMapping
-    public ResponseEntity<PaymentSession> processPaymentTest() {
-        var userId = securityPrincipalProvider.getUserId();
-        log.info("Received request for processing payment for user {}", userId);
-        // TODO: create order
-        var user = singleUserProvider.getUserById(userId);
-        var shoppingCart = shoppingCartManager.getShoppingCartByUserId(userId);
-        log.info("For user {}", userId);
-        Stripe.apiKey = secretKey;
-        String DOMAIN = "http://localhost:80"; // FIXME: get this from request
-        SessionCreateParams params =
-                SessionCreateParams.builder()
-                        .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
-                        .setCustomerEmail(user.getEmail())
-                        .setReturnUrl(DOMAIN + "/orders?sessionId={CHECKOUT_SESSION_ID}")
-                        .addAllLineItem(stripeLineItemsConverter.getLineItems(shoppingCart))
-                        .addAllShippingOption(stripeShippingOptionsProvider.getShippingOptions())
-                        .setAutomaticTax(
-                                SessionCreateParams.AutomaticTax.builder()
-                                        .setEnabled(true)
-                                        .build()
-                        )
-                        .build();
-        Session session;
-        try {
-            session = Session.create(params);
-        } catch (StripeException e) {
-            throw new RuntimeException(e); // FIXME: create specific exception
-        } finally {
-            // FIXME: add record to the DB
-        }
-        shoppingCartManager.deleteByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(new PaymentSession(session.getClientSecret()));
+    public ResponseEntity<SessionWithClientSecretDto> processPayment(final HttpServletRequest request) {
+        log.info("Received request to process payment");
+        var processPaymentResponse = paymentProcessor.processPayment(request);
+        log.info("Payment session was created successfully");
+        return ResponseEntity.ok()
+                .body(processPaymentResponse);
     }
 
-    // TODO: update order status even if it wasn't explicitly requested https://docs.stripe.com/payments/checkout/fulfill-orders
-    // TODO: handle scenario when payment is declined
-    // TODO: handle scenario with 3D secure
-    // TODO: allow saving card details
-    @GetMapping("/stripe/session-status")
-    public ResponseEntity<PaymentSessionStatus> handleStripePaymentResponse(@RequestParam String sessionID) {
-        log.info("Received request for session status, session id {}", sessionID);
-        Session session;
-        try {
-            session = Session.retrieve(sessionID);
-        } catch (StripeException e) {
-            throw new RuntimeException(e); // FIXME: create specific exception
-        } finally {
-            // FIXME: add record to the DB, include shipping option (is it possible to access it from session? <-- investigate)
-        }
-        var response = new PaymentSessionStatus(session.getStatus(), session.getCustomerEmail());
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
-
-    @Override
-    @PostMapping
-    public ResponseEntity<ProcessedPaymentWithClientSecretDto> processPayment(@RequestBody CreatePaymentRequest paymentRequest) {
-        ProcessedPaymentWithClientSecretDto processedPayment = paymentProcessor.processPayment(paymentRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(processedPayment);
-    }
-
-    @Override
-    @GetMapping("/{paymentId}")
-    public ResponseEntity<ProcessedPaymentDetailsDto> getPaymentDetails(@PathVariable final Long paymentId) {
-        ProcessedPaymentDetailsDto retrievedPayment = paymentRetriever.getPaymentDetails(paymentId);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(retrievedPayment);
-    }
-
-    @Override
-    @PostMapping("/event")
-    public ResponseEntity<Void> paymentEventProcess(@RequestBody final String paymentIntentPayload,
-                                                    @RequestHeader("Stripe-Signature") final String stripeSignatureHeader) {
-        paymentEventProcessor.processPaymentEvent(paymentIntentPayload, stripeSignatureHeader);
+    @PostMapping("/stripe/webhook")
+    public ResponseEntity<Void> processStripeWebhook(@RequestHeader("Stripe-Signature") final String stripeSignatureHeader,
+                                                     @RequestBody final String paymentPayload){
+        log.info("Received Stripe payment webhook");
+        webhookEventProcessor.processPaymentEvent(paymentPayload, stripeSignatureHeader);
+        log.info("Finished processing Stripe payment webhook");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Override
-    @PostMapping("/card")
-    public ResponseEntity<String> processCardDetailsToken(@RequestBody final CreateCardDetailsTokenRequest createCardDetailsTokenRequest) {
-        String cardDetailsTokenId = cardDetailsProcessor.processCardDetails(createCardDetailsTokenRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(cardDetailsTokenId);
+    @GetMapping("/status")
+    public ResponseEntity<PaymentSessionStatus> getPaymentStatus(@RequestParam final String sessionID) throws StripeSessionRetrievalException {
+        log.info("Received request to get payment status, session id {}", sessionID);
+        var sessionStatus = stripeSessionProvider.get(sessionID);
+        log.info("Finished processing payment status retrieval");
+        return ResponseEntity.ok().body(sessionStatus);
     }
 }
