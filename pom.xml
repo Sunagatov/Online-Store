@@ -96,7 +96,7 @@
         <!-- JWT Dependencies Versions -->
         <jjwt-impl.version>0.11.5</jjwt-impl.version>
         <jjwt-api.version>0.11.5</jjwt-api.version>
-        <jjwt-jackson.version>0.11.5</jjwt-jackson.version>
+        <jjwt-jackson.version>0.12.6</jjwt-jackson.version>
 
         <!-- Validation Dependencies Versions -->
         <validation-api.version>2.0.1.Final</validation-api.version>
