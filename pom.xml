@@ -83,7 +83,7 @@
         <junit-jupiter.version>5.11.0</junit-jupiter.version>
         <testcontainers.version>1.19.8</testcontainers.version>
         <instancio-junit.version>3.0.1</instancio-junit.version>
-        <rest-assured.version>5.4.0</rest-assured.version>
+        <rest-assured.version>5.5.0</rest-assured.version>
         <json-schema-validator.version>5.4.0</json-schema-validator.version>
 
         <!-- Spring Dependencies Versions -->
