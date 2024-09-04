@@ -16,6 +16,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static com.zufar.icedlatte.test.config.RestAssertion.assertRestApiBadRequestResponse;
@@ -110,8 +111,9 @@ class ProductReviewEndpointTest {
                 .port(port)
                 .basePath(ProductReviewEndpoint.PRODUCT_REVIEW_URL)
                 .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .queryParams("size", 10);
+                .queryParams(Map.of("size", 10))
+                .accept(ContentType.JSON);
+
 
         Response response = given(specification)
                 .get("/{productId}/reviews", AMERICANO_ID);
