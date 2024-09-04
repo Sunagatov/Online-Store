@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProductInfoDtoConverter {
@@ -18,6 +21,7 @@ public interface ProductInfoDtoConverter {
     @Named("toProductInfoDto")
     @Mapping(target = "id", source = "productId")
     @Mapping(target = "averageRating", source = "averageRating", qualifiedByName = "roundAverageRatingValue")
+    @Mapping(target = "dateAdded", source = "dateAdded", qualifiedByName = "localToOffsetDate")
     ProductInfoDto toDto(final ProductInfo entity);
 
     @Mapping(target = "products", source = "content")
@@ -31,5 +35,13 @@ public interface ProductInfoDtoConverter {
             averageRating = averageRating.setScale(1, RoundingMode.HALF_DOWN);
         }
         return averageRating;
+    }
+
+    @Named("localToOffsetDate")
+    default OffsetDateTime offsetToLocalDate(LocalDateTime value) {
+        if (value != null) {
+            return OffsetDateTime.of(value, ZoneOffset.UTC); // Adjust to the appropriate zone if needed
+        }
+        return null;
     }
 }

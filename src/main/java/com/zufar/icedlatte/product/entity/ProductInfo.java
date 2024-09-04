@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -56,6 +57,33 @@ public class ProductInfo {
 
     @Column(name = "seller_name", nullable = false)
     private String sellerName;
+
+    @Column(name = "origin_country", nullable = false)
+    private String originCountry;
+
+    @Column(name = "weight", nullable = false)
+    private Integer weight;
+
+    @Column(name = "size_length", nullable = false)
+    private Integer lengthSize;
+
+    @Column(name = "size_width", nullable = false)
+    private Integer widthSize;
+
+    @Column(name = "size_height", nullable = false)
+    private Integer heightSize;
+
+    @Column(name = "sold_products_count", nullable = false)
+    private Integer soldProductsCount;
+
+    @Column(name = "discount", nullable = false)
+    private Integer discount;
+
+    @Column(name = "date_added", nullable = false)
+    private LocalDateTime dateAdded;
+
+    @Column(name = "popularity_score", nullable = false)
+    private Integer popularityScore;
 
     @Override
     public boolean equals(Object object) {

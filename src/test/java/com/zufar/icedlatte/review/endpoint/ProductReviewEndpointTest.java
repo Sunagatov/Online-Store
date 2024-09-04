@@ -103,8 +103,8 @@ class ProductReviewEndpointTest {
     }
 
     @Test
-    @DisplayName("Should fetch reviews and ratings with default pagination and sorting for unauthorized user")
-    void shouldFetchReviewsAndRatingsWithDefaultPaginationAndSortingForAnonymous() {
+    @DisplayName("Should fetch reviews and ratings with default pagination and sorting with page size for unauthorized user")
+    void shouldFetchReviewsAndRatingsWithDefaultPaginationAndSortingWithPageSizeForAnonymous() {
         // No authorization is required
         specification = given()
                 .log().all(true)
@@ -113,6 +113,7 @@ class ProductReviewEndpointTest {
                 .contentType(ContentType.JSON)
                 .queryParams(Map.of("size", 10))
                 .accept(ContentType.JSON);
+
 
         Response response = given(specification)
                 .get("/{productId}/reviews", AMERICANO_ID);
@@ -185,6 +186,24 @@ class ProductReviewEndpointTest {
                 .body("ratingMap.star3", equalTo(1))
                 .body("ratingMap.star4", equalTo(0))
                 .body("ratingMap.star5", equalTo(0));
+    }
+
+
+    @Test
+    @DisplayName("Reviews and ratings with default pagination and sorting for unauthorized user. Should return 400 Bad Request")
+    void shouldReturnBadRequestForDefaultPaginationAndSortingForAnonymous() {
+        // No authorization is required
+        specification = given()
+                .log().all(true)
+                .port(port)
+                .basePath(ProductReviewEndpoint.PRODUCT_REVIEW_URL)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON);
+
+        Response response = given(specification)
+                .get("/{productId}/reviews", AMERICANO_ID);
+
+        assertRestApiBadRequestResponse(response, FAILED_REVIEW_SCHEMA);
     }
 
     @Test

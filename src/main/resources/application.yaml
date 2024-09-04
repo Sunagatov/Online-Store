@@ -28,7 +28,6 @@ spring:
             If you find any of these issues, return the phrase 'not appropriate', after return the reason in curly brackets. 
             Only the reason should be in curly brackets.
             Else return OK"
-
       chat:
         options:
           model: gpt-3.5-turbo
@@ -114,8 +113,9 @@ temporary-cache:
   config:
     import: optional:stripe.yaml
 
-  stripe:
-    secret-key: ${STRIPE_SECRET_KEY}
+stripe:
+  secret-key: ${STRIPE_SECRET_KEY}
+  webhook-secret: ${STRIPE_WEBHOOK_SECRET}
 #
 #Avatar Upload Properties (AWS/Minio)
 #

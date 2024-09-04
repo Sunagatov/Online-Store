@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -54,7 +55,8 @@ public class FavoriteListDtoConverterTest {
     void convertToProductInfoDto() {
 
         ProductInfo expectedProductInfo = new ProductInfo(UUID.randomUUID(), "Coffee", "Coffee description",
-                new BigDecimal(100), 1, true,  new BigDecimal(100), 1, "Jacobs", "Seller");
+                new BigDecimal(100), 1, true,  new BigDecimal(100), 1, "Jacobs", "Seller",
+                "originCountry", 100, 10, 4, 25, 200, 20, LocalDateTime.now(), 60);
 
         ProductInfoDto actualProductInfoDto = converter.convertProductInfoDto(expectedProductInfo);
 

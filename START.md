@@ -26,7 +26,8 @@ Key variables which are used in the startup of the app. They are pre-configured 
 - `AWS_PRODUCT_BUCKET` AWS product's bucket name
 - `AWS_USER_BUCKET`  AWS product's bucket name
 - `AWS_DEFAULT_PRODUCT_IMAGES_PATH` Package with product's files 
-- `STRIPE_SECRET_KEY` Stripe secret key for payment integration
+- `STRIPE_SECRET_KEY` Stripe secret key for payment session creation
+- `STRIPE_WEBHOOK_SECRET` Stripe secret key for webhook
 
 Refer to [docker-compose.local.yml](./docker-compose.local.yml)
 
@@ -113,6 +114,15 @@ docker compose -f docker-compose.local.yml up -d --build
 :warning: **Limitations**:
 
 AWS is available only in production, therefore there are no real pictures of products, only stubs.
+
+#### Stripe Integration Testing (local)
+
+1. Install [Stripe CLI](https://docs.stripe.com/stripe-cli)
+2. Redirect webhook events
+   ```bash
+   stripe listen --forward-to localhost:80/backend/api/v1/payment/stripe/webhook
+   ```
+3. Use [test cards](https://docs.stripe.com/testing): `4242424242424242`
 
 ## Database Navigator
 

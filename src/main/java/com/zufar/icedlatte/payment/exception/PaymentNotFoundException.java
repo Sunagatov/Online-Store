@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class PaymentNotFoundException extends RuntimeException {
 
-    private final Long paymentId;
+    private final String paymentId;
 
-    public PaymentNotFoundException(final Long paymentId) {
-        super(String.format("The payment with paymentId = %d is not found", paymentId));
+    public PaymentNotFoundException(final String paymentId) {
+        super(String.format("The payment with paymentId = '%s' is not found", paymentId));
         this.paymentId = paymentId;
     }
 }

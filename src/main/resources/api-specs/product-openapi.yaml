@@ -285,6 +285,15 @@ components:
         - reviewsCount
         - brandName
         - sellerName
+        - originCountry
+        - weight
+        - lengthSize
+        - widthSize
+        - heightSize
+        - soldProductsCount
+        - discount
+        - dateAdded
+        - popularityScore
       properties:
         id:
           type: "string"
@@ -313,6 +322,32 @@ components:
           type: "string"
         sellerName:
           type: "string"
+        originCountry:
+          type: "string"
+        weight:
+          type: "integer"
+          format: "int32"
+        lengthSize:
+          type: "integer"
+          format: "int32"
+        widthSize:
+          type: "integer"
+          format: "int32"
+        heightSize:
+          type: "integer"
+          format: "int32"
+        soldProductsCount:
+          type: "integer"
+          format: "int32"
+        discount:
+          type: "integer"
+          format: "int32"
+        dateAdded:
+          type: "string"
+          format: "date-time"
+        popularityScore:
+          type: "integer"
+          format: "int32"
 
     ProductListWithPaginationInfoDto:
       type: "object"

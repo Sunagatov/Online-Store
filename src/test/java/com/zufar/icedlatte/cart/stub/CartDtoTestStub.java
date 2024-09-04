@@ -9,6 +9,7 @@ import com.zufar.icedlatte.openapi.dto.ShoppingCartItemDto;
 import com.zufar.icedlatte.product.entity.ProductInfo;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,7 +24,8 @@ public class CartDtoTestStub {
 
         UUID productId = UUID.fromString("a834c24e-886d-470f-bf19-7454a60f0639");
         ProductInfo productInfo = new ProductInfo(
-                productId, "Test name", "Test description", BigDecimal.valueOf(1.1), 1, true, BigDecimal.ZERO, 0, "brandName", "sellerName");
+                productId, "Test name", "Test description", BigDecimal.valueOf(1.1), 1, true, BigDecimal.ZERO, 0, "brandName", "sellerName",
+                "originCountry", 100, 10, 4, 25, 200, 20, LocalDateTime.now(), 60);
 
         UUID itemId = UUID.fromString("9b588163-b781-46bf-8714-bd0145337ddd");
         return new ShoppingCartItem(
@@ -60,13 +62,16 @@ public class CartDtoTestStub {
 
         UUID firstProductId = UUID.fromString("a834c24e-886d-470f-bf19-7454a60f0639");
         ProductInfo firstProductInfo = new ProductInfo(
-                firstProductId, "First test name", "First test description", BigDecimal.valueOf(1.1), 1, true, BigDecimal.ZERO, 0, "brandName", "sellerName");
+                firstProductId, "First test name", "First test description", BigDecimal.valueOf(1.1), 1, true, BigDecimal.ZERO, 0, "brandName", "sellerName",
+                "originCountry", 200, 10, 5, 25, 200, 50, LocalDateTime.now(), 60);
         UUID secondProductId = UUID.fromString("2ade78e3-aa45-4b6b-adf4-86f8302ced7d");
         ProductInfo secondProductInfo = new ProductInfo(
-                secondProductId, "Second test name", "Second test description", BigDecimal.valueOf(2.2), 2, true, BigDecimal.ZERO, 0, "brandName", "sellerName");
+                secondProductId, "Second test name", "Second test description", BigDecimal.valueOf(2.2), 2, true, BigDecimal.ZERO, 0, "brandName", "sellerName",
+                "originCountry", 100, 10, 4, 25, 200, 20, LocalDateTime.now(), 60);
         UUID thirdProductId = UUID.fromString("b58ac6f1-7ee1-4888-9055-3bebb6aa3631");
         ProductInfo thridProductInfo = new ProductInfo(
-                thirdProductId, "Third test name", "Third test description", BigDecimal.valueOf(3.3), 3, true, BigDecimal.ZERO, 0, "brandName", "sellerName");
+                thirdProductId, "Third test name", "Third test description", BigDecimal.valueOf(3.3), 3, true, BigDecimal.ZERO, 0, "brandName", "sellerName",
+                "originCountry", 100, 10, 4, 25, 200, 20, LocalDateTime.now(), 60);
 
         UUID firstItemId = UUID.fromString("9b588163-b781-46bf-8714-bd0145337ddc");
         ShoppingCartItem firstItem = new ShoppingCartItem(

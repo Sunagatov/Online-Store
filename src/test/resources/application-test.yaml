@@ -121,4 +121,5 @@ google:
   redirectUri: "http://localhost:8083"
 
 stripe:
-  secret-key: "sk-test-secret"
+  secret-key: "sk_test_51PJxciHA4AopuQMMeXaJNETc7RUAITeMTKJei07L8iEHrRiWLQalKsr756dnOzmKPUXufkUVNUSaiPyktJG9dGY500x0cM817f"
+  webhook-secret: "sk-test-secret"

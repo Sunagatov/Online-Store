@@ -14,6 +14,9 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +27,7 @@ public interface FavoriteListDtoConverter {
     FavoriteListDto toDto(final FavoriteListEntity favoriteListEntity);
 
     @Mapping(target = "id", source = "productId")
+    @Mapping(target = "dateAdded", source = "dateAdded", qualifiedByName = "localToOffsetDate")
     ProductInfoDto convertProductInfoDto(ProductInfo productInfo);
 
     @Named("toUserId")
@@ -42,4 +46,13 @@ public interface FavoriteListDtoConverter {
 
         return new FavoriteItemDto(favoriteItemEntityId, productInfoDto);
     }
+
+    @Named("localToOffsetDate")
+    default OffsetDateTime offsetToLocalDate(LocalDateTime value) {
+        if (value != null) {
+            return OffsetDateTime.of(value, ZoneOffset.UTC);
+        }
+        return null;
+    }
+
 }

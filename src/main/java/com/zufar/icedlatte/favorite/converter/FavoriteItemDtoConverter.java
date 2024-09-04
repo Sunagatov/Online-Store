@@ -11,6 +11,9 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Set;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = ProductInfoDtoConverter.class,
@@ -18,9 +21,8 @@ import java.util.Set;
 public interface FavoriteItemDtoConverter {
 
     @Mapping(target = "productInfo", source = "productInfo")
+    @Mapping(target = "productInfo.dateAdded", source = "productInfo.dateAdded", qualifiedByName = "localToOffsetDate")
     FavoriteItemDto toDto(@Context final ProductInfoDtoConverter productInfoDtoConverter,
                           final FavoriteItemEntity favoriteItemEntity);
 
-    @Named("toSetFavoriteItemDto")
-    Set<FavoriteItemDto> toSetDto(final Set<FavoriteItemEntity> favoriteItemEntities);
 }
