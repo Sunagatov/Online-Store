@@ -7,10 +7,12 @@
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/danilqa/node-file-router/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/Sunagatov/Iced-Latte)](https://github.com/Sunagatov/Iced-Latte/issues)
 [![Total Lines of Code](https://tokei.rs/b1/github/Sunagatov/Iced-Latte?category=lines)](https://github.com/Sunagatov/Iced-Latte)
+[![codecov](https://codecov.io/github/Sunagatov/Iced-Latte/branch/development/graph/badge.svg?token=515f0ca9-2c4d-4458-ba0b-baf1de67635e)](https://app.codecov.io/github/Sunagatov/Iced-Latte)
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/zufarexplainedit/iced-latte-backend.svg)](https://hub.docker.com/r/zufarexplainedit/iced-latte-backend/)
 [![GitHub contributors](https://img.shields.io/github/contributors/Sunagatov/Iced-Latte)](https://github.com/Sunagatov/Iced-Latte/graphs/contributors)
 [![GitHub stars](https://img.shields.io/github/stars/Sunagatov/Iced-Latte)](https://github.com/Sunagatov/Iced-Latte/stargazers)
+[![Fork on GitHub](https://img.shields.io/github/forks/Sunagatov/Iced-Latte.svg?style=social)](https://github.com/Sunagatov/Iced-Latte/network/members)
 </div>
 
 ## Table of Contents
@@ -101,9 +103,11 @@ Contributions are welcome.
 
 The main point of interaction is the [Issues page](https://github.com/Sunagatov/Iced-Latte/issues).
 
-Here's our contribution guidelines — [CONTRIBUTING.md](CONTRIBUTING.md).
-
 > The official development language at the moment is English, because 100% of our users speak it. We don't want to introduce unnecessary barriers for them. But we are used to writing commits and comments in Russian and we won't mind communicating with you in it.
+
+The bussiness docs are here [Docs](https://drive.google.com/drive/folders/1vvfXy6n4cz01JjNyTgoYG0g6EIRvyHDw?usp=share_link).
+
+Swagger REST APIs contracts described [here](https://iced-latte.uk/backend/api/docs/swagger-ui/index.html).
 
 ### 😎 I want to write some code
 

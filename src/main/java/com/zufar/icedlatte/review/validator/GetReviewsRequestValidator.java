@@ -38,6 +38,10 @@ public class GetReviewsRequestValidator {
 
     private StringBuilder validateProductRatingsParameter(final List<Integer> productRatings) {
         final StringBuilder errorMessages = new StringBuilder();
+        if (productRatings == null) {
+            String errorMessage = String.format("product's rating is required. Allowed 'productRating' values are '%s'.", ALLOWED_PRODUCT_RATING_VALUES);
+            errorMessages.append(createErrorMessage(errorMessage));
+        }
         if ((productRatings != null && productRatings.stream().anyMatch(Objects::isNull))
                 || (productRatings != null && !ALLOWED_PRODUCT_RATING_VALUES.containsAll(productRatings))) {
             String errorMessage = String.format("Some values of this product's rating list = '%s' are incorrect. Allowed 'productRating' values are '%s'.",

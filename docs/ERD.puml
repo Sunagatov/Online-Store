@@ -113,22 +113,6 @@ entity "shopping_cart_item" {
  version : INT
 }
 
-enum "RESERVATION_STATUS" {
-  CREATED
-  CONFIRMED
-  CANCELLED
-}
-
-entity "reservation" {
- *id : SERIAL PK
- --
- *reservation_id : UUID
- *product_id : UUID
- *reserved_quantity : INT
- *created_at : TIMESTAMP
- *status : RESERVATION_STATUS
-}
-
 entity "favorite_list" {
  *id : UUID PK
  --
@@ -185,8 +169,6 @@ entity "user_details" {
 "product_reviews" ||..o{ "product_reviews_likes" : review_id->id
 "product" ||..o{ "product_reviews_likes" : product_id->id
 "user_details" ||..o{ "product_reviews_likes" : user_id->id
-
-RESERVATION_STATUS ||..o{ "reservation"
 
 "user_details" ||..o{ "favorite_list" : user_id->id
 

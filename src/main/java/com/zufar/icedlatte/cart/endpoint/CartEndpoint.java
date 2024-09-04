@@ -1,5 +1,9 @@
 package com.zufar.icedlatte.cart.endpoint;
 
+import com.zufar.icedlatte.cart.api.AddItemsToShoppingCartHelper;
+import com.zufar.icedlatte.cart.api.ProductQuantityItemUpdater;
+import com.zufar.icedlatte.cart.api.ShoppingCartItemsDeleter;
+import com.zufar.icedlatte.cart.api.ShoppingCartProvider;
 import com.zufar.icedlatte.openapi.dto.AddNewItemsToShoppingCartRequest;
 import com.zufar.icedlatte.openapi.dto.DeleteItemsFromShoppingCartRequest;
 import com.zufar.icedlatte.openapi.dto.NewShoppingCartItemDto;
@@ -30,15 +34,18 @@ public class CartEndpoint implements com.zufar.icedlatte.openapi.cart.api.Shoppi
 
     public static final String CART_URL = "/api/v1/cart";
 
-    private final com.zufar.icedlatte.cart.api.CartApi cartApi;
     private final SecurityPrincipalProvider securityPrincipalProvider;
+    private final AddItemsToShoppingCartHelper addItemsToShoppingCartHelper;
+    private final ProductQuantityItemUpdater productQuantityItemUpdater;
+    private final ShoppingCartProvider shoppingCartProvider;
+    private final ShoppingCartItemsDeleter shoppingCartItemsDeleter;
 
     @Override
     @PostMapping(value = "/items")
     public ResponseEntity<ShoppingCartDto> addNewItemToShoppingCart(@RequestBody final AddNewItemsToShoppingCartRequest request) {
         log.warn("Received the request to add a new items to the shoppingCart");
         Set<NewShoppingCartItemDto> items = request.getItems();
-        ShoppingCartDto shoppingCartDto = cartApi.addItemsToShoppingCart(items);
+        ShoppingCartDto shoppingCartDto = addItemsToShoppingCartHelper.add(items);
         log.info("ShoppingCartItem was added to the shoppingCart with id={}", shoppingCartDto.getId());
         return ResponseEntity.ok()
                 .body(shoppingCartDto);
@@ -49,7 +56,7 @@ public class CartEndpoint implements com.zufar.icedlatte.openapi.cart.api.Shoppi
     public ResponseEntity<ShoppingCartDto> getShoppingCart() {
         UUID userId = securityPrincipalProvider.getUserId();
         log.info("Received the request to get the shoppingCart for the user with id: {}", userId);
-        ShoppingCartDto shoppingCartDto = cartApi.getShoppingCartByUserId(userId);
+        ShoppingCartDto shoppingCartDto = shoppingCartProvider.getByUserId(userId);
         log.info("The shoppingCart for the user with id: {} was retrieved successfully", shoppingCartDto.getUserId());
         return ResponseEntity.ok()
                 .body(shoppingCartDto);
@@ -62,7 +69,7 @@ public class CartEndpoint implements com.zufar.icedlatte.openapi.cart.api.Shoppi
         Integer productQuantityChange = request.getProductQuantityChange();
         log.warn("Received the request to update the productQuantity with the change = {} in the shoppingCartItem with id: {}.",
                 productQuantityChange, shoppingCartItemId);
-        ShoppingCartDto shoppingCartDto = cartApi.updateProductQuantityInShoppingCartItem(shoppingCartItemId, productQuantityChange);
+        ShoppingCartDto shoppingCartDto = productQuantityItemUpdater.update(shoppingCartItemId, productQuantityChange);
         log.info("ProductsQuantity was updated in shoppingCart item");
         return ResponseEntity.ok()
                 .body(shoppingCartDto);
@@ -72,7 +79,7 @@ public class CartEndpoint implements com.zufar.icedlatte.openapi.cart.api.Shoppi
     @DeleteMapping(value = "/items")
     public ResponseEntity<ShoppingCartDto> deleteItemsFromShoppingCart(@RequestBody final DeleteItemsFromShoppingCartRequest request) {
         log.info("Received the request to delete the shopping cart items with ids: {}.", request.getShoppingCartItemIds());
-        ShoppingCartDto shoppingCartDto = cartApi.deleteItemsFromShoppingCart(request);
+        ShoppingCartDto shoppingCartDto = shoppingCartItemsDeleter.delete(request);
         log.info("The shopping cart items with ids = {} were deleted.", request.getShoppingCartItemIds());
         return ResponseEntity.ok()
                 .body(shoppingCartDto);

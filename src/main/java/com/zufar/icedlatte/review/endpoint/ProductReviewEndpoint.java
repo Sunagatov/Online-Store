@@ -74,8 +74,8 @@ public class ProductReviewEndpoint implements com.zufar.icedlatte.openapi.produc
                                                                                               @RequestParam(name = "sort_attribute", defaultValue = "createdAt") final String sortAttribute,
                                                                                               @RequestParam(name = "sort_direction", defaultValue = "desc") final String sortDirection,
                                                                                               @RequestParam(name = "product_ratings", required = false) List<Integer> productRatings) {
-        log.info("Received the request to get reviews and ratings for the product with the productId = '{}' and with the next pagination and sorting attributes: pageNumber - {}, pageSize - {}, sort_attribute - {}, sort_direction - {}",
-                productId, pageNumber, pageSize, sortAttribute, sortDirection);
+        log.info("Received the request to get reviews and ratings for the product with the productId = '{}' and with the next pagination and sorting attributes: pageNumber - {}, pageSize - {}, sort_attribute - {}, sort_direction - {}, productRatings - {}",
+                productId, pageNumber, pageSize, sortAttribute, sortDirection, productRatings);
         Pageable pageable = createPageableObject(pageNumber, pageSize, sortAttribute, sortDirection);
         getReviewsRequestValidator.validate(pageNumber, pageSize, sortAttribute, sortDirection, productRatings);
         ProductReviewsAndRatingsWithPagination reviewsPaginationDto = productReviewsProvider.getProductReviews(productId, pageable, productRatings);

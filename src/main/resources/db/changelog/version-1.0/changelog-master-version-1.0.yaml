@@ -6,8 +6,6 @@ databaseChangeLog:
   - include:
       file: db/changelog/version-1.0/19.07.2023.part2.insert-product-data.sql
   - include:
-      file: db/changelog/version-1.0/20.07.2023.create-payment-table.sql
-  - include:
       file: db/changelog/version-1.0/21.07.2023.part1.create-shopping-cart-table.sql
   - include:
       file: db/changelog/version-1.0/21.07.2023.part2.create-shopping-cart-item-table.sql
@@ -15,8 +13,6 @@ databaseChangeLog:
       file: db/changelog/version-1.0/21.07.2023.part3.insert-shopping-cart-data.sql
   - include:
       file: db/changelog/version-1.0/21.07.2023.part4.insert-shopping-cart-item-data.sql
-  - include:
-      file: db/changelog/version-1.0/22.07.2023.create-reservation-table.sql
   - include:
       file: db/changelog/version-1.0/28.07.2023.part1.create-address-table.sql
   - include:
@@ -45,6 +41,8 @@ databaseChangeLog:
       file: db/changelog/version-1.0/07.01.2024.part1.create-order-table.sql
   - include:
       file: db/changelog/version-1.0/07.01.2024.part2.create-order-item-table.sql
+  - include:
+      file: db/changelog/version-1.0/20.07.2023.create-payment-table.sql
   - include:
       file: db/changelog/version-1.0/08.02.2024.part1.create-product-review-table.sql
   - include:
