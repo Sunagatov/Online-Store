@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS payment
+CREATE TABLE IF NOT EXISTS public.payment
 (
     id          UUID            PRIMARY KEY,
     order_id    UUID            NOT NULL,

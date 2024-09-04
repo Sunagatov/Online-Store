@@ -2,8 +2,8 @@ package com.zufar.icedlatte.auth.endpoint;
 
 import com.zufar.icedlatte.auth.api.AuthorizationServerUrlCreator;
 import com.zufar.icedlatte.auth.api.GoogleAuthCallbackHandler;
-import com.zufar.icedlatte.security.dto.UserAuthenticationResponse;
 
+import com.zufar.icedlatte.openapi.dto.UserAuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;

@@ -2,7 +2,7 @@ openapi: "3.0.3"
 
 info:
   title: "Iced-Latte Product API"
-  description: "This API allows clients to interact with an Iced Latte's product catalog, including retrieval and listing of products."
+  description: "API for interacting with Iced Latte's product catalog, including retrieving and listing products. Supports filtering, sorting, and pagination of product data."
   version: "1.0.0"
   contact:
     name: "Iced Latte Support"
@@ -23,8 +23,8 @@ paths:
     get:
       tags:
         - "Product"
-      summary: "Retrieve a Product by ID"
-      description: "Fetch detailed information of a single product using its unique identifier."
+      summary: "Retrieve a product by its unique ID"
+      description: "Fetch detailed information of a product using its unique identifier."
       operationId: "getProductById"
       parameters:
         - name: "productId"
@@ -36,53 +36,56 @@ paths:
             format: "uuid"
       responses:
         "200":
-          description: "The product was found and its details are returned."
+          description: "Product details successfully retrieved."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductInfoDto"
         "404":
-          description: "No product found for the given ID."
+          description: "Product not found for the given ID."
         "500":
-          description: "Internal Server Error."
+          description: "Internal server error."
 
   /api/v1/products/sellers:
     get:
       tags:
         - "Product"
-      description: "Retrieve a list of all hardcoded sellers of products"
+      summary: "List all product sellers"
+      description: "Retrieve a list of all sellers from the hardcoded data."
       operationId: "getAllSellers"
       responses:
         "200":
-          description: "The list of all hardcoded sellers of products were provided."
+          description: "List of all product sellers retrieved successfully."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SellersDto"
         "500":
-          description: "Internal Server Error."
+          description: "Internal server error."
+
   /api/v1/products/brands:
     get:
       tags:
         - "Product"
-      description: "Retrieve a list of all hardcoded brands of products"
+      summary: "List all product brands"
+      description: "Retrieve a list of all brands from the hardcoded data."
       operationId: "getAllBrands"
       responses:
         "200":
-          description: "The list of all hardcoded brands of products were provided."
+          description: "List of all product brands retrieved successfully."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/BrandsDto"
         "500":
-          description: "Internal Server Error."
+          description: "Internal server error."
 
   /api/v1/products:
     get:
       tags:
         - "Product"
-      summary: "List Products with pagination, sorting and filtering features."
-      description: "Retrieve a paginated list of products, with optional sorting and filtering parameters."
+      summary: "List products with pagination, sorting, and filtering"
+      description: "Retrieve a paginated list of products with optional sorting and filtering parameters."
       operationId: "getProducts"
       parameters:
         - name: "page"
@@ -239,16 +242,16 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProductListWithPaginationInfoDto"
         "400":
-          description: "Invalid parameters provided for pagination or/and sorting or/and filtering."
+          description: "Invalid parameters provided."
         "500":
-          description: "Internal Server Error."
+          description: "Internal server error."
 
   /api/v1/products/ids:
     post:
       tags:
         - "Product"
-      summary: "List Products by IDs"
-      description: "Retrieve a list of products using a list of unique identifiers."
+      summary: "Retrieve products by their IDs"
+      description: "Fetch a list of products based on a list of unique identifiers."
       operationId: "getProductsByIds"
       requestBody:
         required: true
@@ -258,7 +261,7 @@ paths:
               $ref: "#/components/schemas/ProductIdsDto"
       responses:
         "200":
-          description: "List of products by IDs retrieved successfully."
+          description: "List of products retrieved successfully."
           content:
             application/json:
               schema:
@@ -268,7 +271,7 @@ paths:
         "400":
           description: "Invalid parameters provided."
         "500":
-          description: "Internal Server Error."
+          description: "Internal server error."
 
 components:
   schemas:
@@ -298,56 +301,76 @@ components:
         id:
           type: "string"
           format: "uuid"
+          description: "Unique identifier for the product."
         name:
           type: "string"
+          description: "Name of the product."
         description:
           type: "string"
+          description: "Description of the product."
         price:
           type: "number"
           format: "decimal"
+          description: "Price of the product."
         quantity:
           type: "integer"
           format: "int32"
+          description: "Available quantity of the product."
         active:
           type: "boolean"
+          description: "Indicates if the product is active."
         productFileUrl:
           type: "string"
+          description: "URL of the product's image or file."
         averageRating:
           type: "number"
           format: "decimal"
+          description: "Average rating of the product."
         reviewsCount:
           type: "integer"
           format: "int32"
+          description: "Number of reviews for the product."
         brandName:
           type: "string"
+          description: "Brand of the product."
         sellerName:
           type: "string"
+          description: "Seller of the product."
         originCountry:
           type: "string"
+          description: "Country where the product is manufactured."
         weight:
           type: "integer"
           format: "int32"
+          description: "Weight of the product."
         lengthSize:
           type: "integer"
           format: "int32"
+          description: "Length size of the product."
         widthSize:
           type: "integer"
           format: "int32"
+          description: "Width size of the product."
         heightSize:
           type: "integer"
           format: "int32"
+          description: "Height size of the product."
         soldProductsCount:
           type: "integer"
           format: "int32"
+          description: "Number of products sold."
         discount:
           type: "integer"
           format: "int32"
+          description: "Discount applied to the product."
         dateAdded:
           type: "string"
           format: "date-time"
+          description: "Date and time when the product was added."
         popularityScore:
           type: "integer"
           format: "int32"
+          description: "Popularity score of the product."
 
     ProductListWithPaginationInfoDto:
       type: "object"
@@ -362,18 +385,23 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/ProductInfoDto"
+          description: "List of products."
         page:
           type: "integer"
           format: "int32"
+          description: "Current page number."
         size:
           type: "integer"
           format: "int32"
+          description: "Number of products per page."
         totalElements:
           type: "integer"
           format: "int64"
+          description: "Total number of products."
         totalPages:
           type: "integer"
           format: "int32"
+          description: "Total number of pages."
 
     ProductIdsDto:
       type: "object"
@@ -385,6 +413,7 @@ components:
           items:
             type: "string"
             format: "uuid"
+          description: "List of product IDs."
 
     SellersDto:
       type: "object"
@@ -395,6 +424,7 @@ components:
           type: "array"
           items:
             type: "string"
+          description: "List of product sellers."
 
     BrandsDto:
       type: "object"
@@ -405,3 +435,4 @@ components:
           type: "array"
           items:
             type: "string"
+          description: "List of product brands."

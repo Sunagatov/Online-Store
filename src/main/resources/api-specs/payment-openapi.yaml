@@ -39,6 +39,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorHandler"
 
+  /api/v1/payment/order:
+    get:
+      tags:
+        - "Payment"
+      summary: "Creates Order after Stripe checkout session completion"
+      operationId: "processRedirectEvent"
+      parameters:
+        - name: "sessionId"
+          description: "Stripe checkout session ID"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Order created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentConfirmationEmail"
+        "400":
+          description: "Cannot create order"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorHandler"
+
 components:
   schemas:
     PaymentStatus:
@@ -55,6 +82,12 @@ components:
         sessionId:
           type: "string"
         clientSecret:
+          type: "string"
+
+    PaymentConfirmationEmail:
+      type: "object"
+      properties:
+        customerEmail:
           type: "string"
 
     ErrorHandler:

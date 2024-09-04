@@ -10,16 +10,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StripeSessionStatus {
-
-    /**
-     * Indicates that a payment action is required.
-     */
-    PAYMENT_ACTION_IS_REQUIRED("no payment attempt", "Payment action is required."),
-
     /**
      * Indicates that the checkout session has expired.
      */
-    SESSION_IS_EXPIRED(StripeSessionConstants.SESSION_IS_EXPIRED, "Checkout Session is expired."),
+    SESSION_IS_EXPIRED(StripeSessionConstants.SESSION_IS_EXPIRED, "Checkout Session has expired."),
 
     /**
      * Indicates that the payment has succeeded.

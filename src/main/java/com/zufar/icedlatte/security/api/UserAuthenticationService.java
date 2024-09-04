@@ -1,8 +1,8 @@
 package com.zufar.icedlatte.security.api;
 
+import com.zufar.icedlatte.openapi.dto.UserAuthenticationRequest;
+import com.zufar.icedlatte.openapi.dto.UserAuthenticationResponse;
 import com.zufar.icedlatte.security.exception.UserAccountLockedException;
-import com.zufar.icedlatte.security.dto.UserAuthenticationRequest;
-import com.zufar.icedlatte.security.dto.UserAuthenticationResponse;
 import com.zufar.icedlatte.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +29,8 @@ public class UserAuthenticationService {
     private final ResetLoginAttemptsService resetLoginAttemptsService;
 
     public UserAuthenticationResponse authenticate(final UserAuthenticationRequest request) {
-        String userEmail = request.email();
-        String userPassword = request.password();
+        String userEmail = request.getEmail();
+        String userPassword = request.getPassword();
 
         log.info("Authenticating user with email = '{}'", userEmail);
 
@@ -43,11 +43,14 @@ public class UserAuthenticationService {
 
             String jwtRefreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
             String jwtToken = jwtTokenProvider.generateToken(userDetails);
-            log.info("Generated JWT token for user with email = '{}'", request.email());
+            log.info("Generated JWT token for user with email = '{}'", request.getEmail());
 
             resetLoginAttemptsService.reset(userEmail);
 
-            return new UserAuthenticationResponse(jwtToken, jwtRefreshToken);
+            UserAuthenticationResponse response = new UserAuthenticationResponse();
+            response.setToken(jwtToken);
+            response.setRefreshToken(jwtRefreshToken);
+            return response;
 
         } catch (UsernameNotFoundException exception) {
             log.warn("User with the provided email='{}' does not exist", userEmail, exception);
@@ -75,7 +78,10 @@ public class UserAuthenticationService {
 
             resetLoginAttemptsService.reset(userEmail);
 
-            return new UserAuthenticationResponse(jwtToken, jwtRefreshToken);
+            UserAuthenticationResponse response = new UserAuthenticationResponse();
+            response.setToken(jwtToken);
+            response.setRefreshToken(jwtRefreshToken);
+            return response;
         } catch (BadCredentialsException exception) {
             log.warn("Invalid credentials for user's account with email = '{}'", userEmail, exception);
             loginFailureHandler.handle(userEmail);

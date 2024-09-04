@@ -7,6 +7,7 @@ import com.zufar.icedlatte.payment.exception.PaymentEventParsingException;
 import com.zufar.icedlatte.payment.exception.PaymentEventProcessingException;
 import com.zufar.icedlatte.payment.exception.PaymentNotFoundException;
 import com.zufar.icedlatte.payment.exception.StripeSessionCreationException;
+import com.zufar.icedlatte.payment.exception.StripeSessionIsNotComplete;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,16 @@ public class PaymentExceptionHandler {
     public ApiErrorResponse handleStripeSessionCreationException(final StripeSessionCreationException exception) {
         ApiErrorResponse apiErrorResponse = apiErrorResponseCreator.buildResponse(exception, HttpStatus.BAD_REQUEST);
         log.error("Handle stripe session creation exception: failed: message: {}, debugMessage: {}.",
+                apiErrorResponse.message(), errorDebugMessageCreator.buildErrorDebugMessage(exception));
+
+        return apiErrorResponse;
+    }
+
+    @ExceptionHandler(StripeSessionIsNotComplete.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handleStripeSessionIsNotComplete(final StripeSessionIsNotComplete exception) {
+        ApiErrorResponse apiErrorResponse = apiErrorResponseCreator.buildResponse(exception, HttpStatus.BAD_REQUEST);
+        log.error("Handle stripe session id not complete exception: failed: message: {}, debugMessage: {}.",
                 apiErrorResponse.message(), errorDebugMessageCreator.buildErrorDebugMessage(exception));
 
         return apiErrorResponse;

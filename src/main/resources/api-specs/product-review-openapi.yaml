@@ -9,8 +9,6 @@ info:
     email: "zufar.sunagatov@gmail.com"
 
 servers:
-  - url: "http://localhost:8083"
-    description: "Local development server"
   - url: "https://iced-latte.uk/backend"
     description: "Production server"
 

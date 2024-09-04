@@ -1,6 +1,6 @@
 package com.zufar.icedlatte.security.converter;
 
-import com.zufar.icedlatte.security.dto.UserRegistrationRequest;
+import com.zufar.icedlatte.openapi.dto.UserRegistrationRequest;
 import com.zufar.icedlatte.user.entity.UserEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,10 +36,10 @@ class RegistrationDtoConverterTest {
 
         UserEntity userEntity = registrationDtoConverter.toEntity(userRegistrationRequest);
 
-        assertEquals(userRegistrationRequest.firstName(), userEntity.getFirstName());
-        assertEquals(userRegistrationRequest.lastName(), userEntity.getLastName());
-        assertEquals(userRegistrationRequest.email(), userEntity.getEmail());
-        assertEquals(userRegistrationRequest.password(), userEntity.getPassword());
+        assertEquals(userRegistrationRequest.getFirstName(), userEntity.getFirstName());
+        assertEquals(userRegistrationRequest.getLastName(), userEntity.getLastName());
+        assertEquals(userRegistrationRequest.getEmail(), userEntity.getEmail());
+        assertEquals(userRegistrationRequest.getPassword(), userEntity.getPassword());
     }
 }
 

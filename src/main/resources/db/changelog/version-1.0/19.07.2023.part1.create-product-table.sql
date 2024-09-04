@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS product (
+CREATE TABLE IF NOT EXISTS public.product (
     id             UUID,
     name           VARCHAR(64) NOT NULL,
     description    TEXT,

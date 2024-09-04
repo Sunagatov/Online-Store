@@ -1,7 +1,7 @@
 package com.zufar.icedlatte.auth.api;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.zufar.icedlatte.security.dto.UserAuthenticationResponse;
+import com.zufar.icedlatte.openapi.dto.UserAuthenticationResponse;
 import com.zufar.icedlatte.security.jwt.JwtTokenProvider;
 import com.zufar.icedlatte.user.entity.Authority;
 import com.zufar.icedlatte.user.entity.UserEntity;
@@ -10,7 +10,6 @@ import com.zufar.icedlatte.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +23,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class GoogleAuthCallbackHandler {
-
-    @Value("${google.redirectUri}")
-    String redirectUri;
 
     private final GoogleIdTokenCreator googleIdTokenCreator;
     private final UserRepository userRepository;
@@ -58,7 +54,10 @@ public class GoogleAuthCallbackHandler {
         final String jwtRefreshToken = jwtTokenProvider.generateRefreshToken(userEntity);
         final String jwtToken = jwtTokenProvider.generateToken(userEntity);
 
-        return new UserAuthenticationResponse(jwtToken, jwtRefreshToken);
+        UserAuthenticationResponse response = new UserAuthenticationResponse();
+        response.setToken(jwtToken);
+        response.setRefreshToken(jwtRefreshToken);
+        return response;
     }
 
     private UserEntity registerNewUser(final String firstName,

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS product_reviews
+CREATE TABLE IF NOT EXISTS public.product_reviews
 (
     id             UUID PRIMARY KEY,
     product_id     UUID          NOT NULL,
@@ -11,11 +11,11 @@ CREATE TABLE IF NOT EXISTS product_reviews
 
     CONSTRAINT fk_user
         FOREIGN KEY (user_id)
-            REFERENCES user_details (id)
+            REFERENCES public.user_details (id)
             ON DELETE CASCADE,
 
     CONSTRAINT fk_product
         FOREIGN KEY (product_id)
-            REFERENCES product (id)
+            REFERENCES public.product (id)
             ON DELETE CASCADE
 );

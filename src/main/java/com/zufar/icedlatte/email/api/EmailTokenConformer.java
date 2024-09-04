@@ -1,10 +1,10 @@
 package com.zufar.icedlatte.email.api;
 
 import com.zufar.icedlatte.email.api.token.TokenManager;
+import com.zufar.icedlatte.openapi.dto.ConfirmEmailRequest;
+import com.zufar.icedlatte.openapi.dto.UserRegistrationRequest;
+import com.zufar.icedlatte.openapi.dto.UserRegistrationResponse;
 import com.zufar.icedlatte.security.api.UserRegistrationService;
-import com.zufar.icedlatte.security.dto.ConfirmEmailRequest;
-import com.zufar.icedlatte.security.dto.UserRegistrationRequest;
-import com.zufar.icedlatte.security.dto.UserRegistrationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

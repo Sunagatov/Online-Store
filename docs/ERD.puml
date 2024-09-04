@@ -84,16 +84,6 @@ entity "product" {
  *seller_name : VARCHAR(64)
 }
 
-entity "payment" {
- *payment_id : BIGSERIAL PK
- --
- *payment_intent_id : VARCHAR(64)
- *shopping_cart_id : UUID
- *items_total_price : DECIMAL
- status : VARCHAR(32)
- description : TEXT
-}
-
 entity "shopping_cart" {
  *id : UUID PK
  --

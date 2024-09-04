@@ -51,7 +51,7 @@ spring:
     drop-first: true
 
   #
-  # Aws Properties
+  # AWS Properties
   #
   aws:
     access-key: ${AWS_ACCESS_KEY}
@@ -69,7 +69,7 @@ spring:
       products: ${AWS_DEFAULT_PRODUCT_IMAGES_PATH}
 
   #
-  # Redis
+  # Redis Properties
   #
   data:
     redis:
@@ -77,13 +77,13 @@ spring:
       port: ${REDIS_PORT}
 
   #
-  # Email
+  # Email Properties
   #
   mail:
     host: smtp.gmail.com
     port: 587
     username: youricedlatteshop@gmail.com
-    password: "kfcf kyba hrab nyij"   #https://support.google.com/mail/answer/7104828?hl=en&rd=3&visit_id=638195765566773400-3814427644
+    password: "kfcf kyba hrab nyij"
     subject:
       confirmation: "Iced Latte - Email Confirmation"
     properties:
@@ -107,18 +107,19 @@ temporary-cache:
     token: 5
   get-token-enabled: true
 
-#
-# Stripe Api Properties
-#
+  #
+  # Stripe API Properties
+  #
   config:
     import: optional:stripe.yaml
 
 stripe:
   secret-key: ${STRIPE_SECRET_KEY}
   webhook-secret: ${STRIPE_WEBHOOK_SECRET}
-#
-#Avatar Upload Properties (AWS/Minio)
-#
+
+  #
+  # Avatar Upload Properties
+  #
   servlet:
     multipart:
       enabled: true

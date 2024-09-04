@@ -40,6 +40,9 @@ public class Order {
     @Column(name = "user_id", updatable = false, nullable = false)
     private UUID userId;
 
+    @Column(name = "session_id", updatable = false, nullable = false)
+    private String sessionId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private OrderStatus status;

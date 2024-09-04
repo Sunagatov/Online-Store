@@ -2,7 +2,7 @@ openapi: "3.0.3"
 
 info:
   title: "Iced Latte Order API"
-  description: "API allows users to access orders and related operations."
+  description: "API for managing orders, including retrieving and placing orders. Supports filtering orders by status and provides detailed order information."
   version: "1.0.0"
   contact:
     name: "Iced Latte Support"
@@ -16,18 +16,19 @@ servers:
 
 tags:
   - name: "Orders"
-    description: "Operations related to orders"
+    description: "Operations related to orders."
 
 paths:
   /api/v1/orders:
     get:
       tags:
         - "Orders"
-      summary: "Get all orders for the authorized user by status"
+      summary: "Retrieve orders for the authorized user based on status"
+      description: "Fetches all orders for the authenticated user, optionally filtered by status codes."
       operationId: "getOrders"
       parameters:
         - name: "status"
-          description: "Array of status codes to be applied for orders filtering"
+          description: "Filter orders by status. Multiple status codes can be provided as an array."
           in: "query"
           required: false
           schema:
@@ -36,7 +37,7 @@ paths:
               $ref: "#/components/schemas/OrderStatus"
       responses:
         "200":
-          description: "OK"
+          description: "List of orders successfully retrieved."
           content:
             application/json:
               schema:
@@ -46,25 +47,25 @@ paths:
         "401":
           description: "Unauthorized access."
         "404":
-          description: "Orders list is empty."
+          description: "No orders found matching the specified criteria."
         "500":
           description: "Internal server error."
 
     post:
       tags:
         - "Orders"
-      summary: "Add order for the authorized user"
+      summary: "Place a new order for the authorized user"
+      description: "Creates a new order for the authenticated user. Requires address and recipient information."
       operationId: "createOrder"
-
       responses:
         "200":
-          description: "Order placed successfully."
+          description: "Order successfully placed."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrderDto"
         "400":
-          description: "Invalid input, object invalid."
+          description: "Invalid input data."
         "401":
           description: "Unauthorized access."
         "500":
@@ -74,12 +75,16 @@ components:
   schemas:
     OrderStatus:
       type: string
-      description: "Order status: 'CREATED' - new order recently created, 'PAID' - order was paid, 'DELIVERY' - order was sent, 'FINISHED' - order was delivered"
-      enum: [ CREATED, PAID, DELIVERY, FINISHED ]
+      description: "The status of an order."
+      enum:
+        - CREATED
+        - PAID
+        - DELIVERY
+        - FINISHED
 
     CreateNewOrderRequestDto:
       type: "object"
-      description: "An order structure in the Iced-Latte system"
+      description: "Details required to create a new order."
       required:
         - address
         - recipientName
@@ -89,14 +94,14 @@ components:
           $ref: "./user-openapi.yaml#/components/schemas/AddressDto"
         recipientName:
           type: "string"
-          description: "May be different from the user's name"
+          description: "Name of the order recipient. Can be different from the user's name."
         recipientSurname:
           type: "string"
-          description: "May be different from the user's surname"
+          description: "Surname of the order recipient. Can be different from the user's surname."
 
     OrderDto:
       type: "object"
-      description: "an Order"
+      description: "Represents an order in the system."
       required:
         - id
         - status
@@ -105,9 +110,10 @@ components:
         id:
           type: "string"
           format: "uuid"
-          description: "The unique identifier for the order"
+          description: "Unique identifier for the order."
         status:
           $ref: '#/components/schemas/OrderStatus'
         createdAt:
-            type: "string"
-            format: "date-time"
+          type: "string"
+          format: "date-time"
+          description: "The date and time when the order was created."

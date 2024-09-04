@@ -4,7 +4,6 @@ import com.zufar.icedlatte.openapi.dto.OrderDto;
 import com.zufar.icedlatte.openapi.dto.OrderStatus;
 import com.zufar.icedlatte.order.converter.OrderDtoConverter;
 import com.zufar.icedlatte.order.entity.Order;
-import com.zufar.icedlatte.order.exception.OrderNotFoundException;
 import com.zufar.icedlatte.order.repository.OrderRepository;
 import com.zufar.icedlatte.security.api.SecurityPrincipalProvider;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -39,13 +39,8 @@ public class OrderProvider {
                 .toList();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Order getOrderEntityById(final UUID userId,
-                                    final UUID orderId) {
-        return orderRepository.findByUserIdAndId(userId, orderId)
-                .orElseThrow(() -> {
-                    log.warn("Failed to get the order entity with id = '{}'", orderId);
-                    return new OrderNotFoundException(orderId);
-                });
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE, readOnly = true)
+    public Optional<Order> getOrderEntityByUserAndSession(final UUID userId, final String sessionId) {
+        return orderRepository.findByUserIdAndSessionId(userId, sessionId);
     }
 }

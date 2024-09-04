@@ -76,6 +76,12 @@ spring:
       host: localhost
       port: 6380
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: youricedlatteshop@gmail.com
+    password: 35346432634
+
 #
 # Temporary Cache
 #

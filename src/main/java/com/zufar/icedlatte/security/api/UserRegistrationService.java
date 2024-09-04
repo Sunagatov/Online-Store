@@ -1,8 +1,8 @@
 package com.zufar.icedlatte.security.api;
 
+import com.zufar.icedlatte.openapi.dto.UserRegistrationRequest;
+import com.zufar.icedlatte.openapi.dto.UserRegistrationResponse;
 import com.zufar.icedlatte.security.converter.RegistrationDtoConverter;
-import com.zufar.icedlatte.security.dto.UserRegistrationRequest;
-import com.zufar.icedlatte.security.dto.UserRegistrationResponse;
 import com.zufar.icedlatte.security.jwt.JwtTokenProvider;
 import com.zufar.icedlatte.user.entity.Authority;
 import com.zufar.icedlatte.user.entity.UserEntity;
@@ -29,7 +29,7 @@ public class UserRegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     public UserRegistrationResponse register(final UserRegistrationRequest userRegistrationRequest) {
-        String encryptedPassword = passwordEncoder.encode(userRegistrationRequest.password());
+        String encryptedPassword = passwordEncoder.encode(userRegistrationRequest.getPassword());
         UserGrantedAuthority defaultUserGrantedAuthority = UserGrantedAuthority.builder().authority(Authority.USER).build();
 
         UserEntity newUserEntity = registrationDtoConverter.toEntity(userRegistrationRequest);
@@ -45,6 +45,9 @@ public class UserRegistrationService {
         final String jwtRefreshToken = jwtTokenProvider.generateRefreshToken(userEntity);
         final String jwtToken = jwtTokenProvider.generateToken(userEntity);
 
-        return new UserRegistrationResponse(jwtToken, jwtRefreshToken);
+        UserRegistrationResponse response = new UserRegistrationResponse();
+        response.setToken(jwtToken);
+        response.setRefreshToken(jwtRefreshToken);
+        return response;
     }
 }

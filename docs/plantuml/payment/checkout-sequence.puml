@@ -18,17 +18,23 @@ be <-- stripe: Return client_secret
 be --> fe: Return client_secret
 fe -> stripe: Embed Stripe's payment page using client_secret
 fe <-- stripe: Redirect /orders?sessionId={CHECKOUT_SESSION_ID}
-fe -> be: GET /stripe/status?sessionId={CHECKOUT_SESSION_ID}
+fe -> be: GET /api/v1/payment/order?sessionId={CHECKOUT_SESSION_ID}
 be -> stripe: GET /v1/checkout/sessions/CHECKOUT_SESSION_ID
-be <-- stripe: Session status (OPEN / COMPLETE)
-fe <-- be: Response with session status and email
-
-be <-- stripe: POST /v1/stripe/webhook
-alt <font color=green>"checkout.session.completed"</font>
+be <-- stripe: Session object
+alt <font color=green>Order[userId, sessionId] not created yet</font>
     be -> db: Create Order
     be -> db: Delete Cart
     user <-- be: Send email (successful order)
+end
+
+be <-- stripe: POST /v1/stripe/webhook
+alt <font color=green>"checkout.session.completed"</font>
+    alt <font color=green>Order[userId, sessionId] not created yet</font>
+        be -> db: Create Order
+        be -> db: Delete Cart
+        user <-- be: Send email (successful order)
+    end
 else <font color=red>"checkout.session.expired"</font>
-    be -> db: Update status and description in Payment
+    be -> be: Add log entry
 end
 @enduml

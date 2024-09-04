@@ -1,7 +1,7 @@
 package com.zufar.icedlatte.security.api;
 
-import com.zufar.icedlatte.security.dto.UserAuthenticationRequest;
-import com.zufar.icedlatte.security.dto.UserAuthenticationResponse;
+import com.zufar.icedlatte.openapi.dto.UserAuthenticationRequest;
+import com.zufar.icedlatte.openapi.dto.UserAuthenticationResponse;
 import com.zufar.icedlatte.security.exception.UserAccountLockedException;
 import com.zufar.icedlatte.security.jwt.JwtTokenProvider;
 import org.instancio.Instancio;
@@ -52,17 +52,18 @@ class UserAuthenticationServiceTest {
     @DisplayName("Should Return JWT Token When Valid Credentials Are Provided")
     void shouldReturnJwtTokenWhenValidCredentialsProvided() {
         Authentication authentication = mock(Authentication.class);
+        UserAuthenticationResponse userAuthenticationResponse = new UserAuthenticationResponse();
+        userAuthenticationResponse.setToken("TestJwtToken");
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn(userDetails);
-        String jwtToken = "TestJwtToken";
-        when(jwtTokenProvider.generateToken(userDetails)).thenReturn(jwtToken);
+        when(jwtTokenProvider.generateToken(userDetails)).thenReturn("TestJwtToken");
 
         UserAuthenticationResponse response = userAuthenticationService.authenticate(request);
 
-        assertEquals(new UserAuthenticationResponse(jwtToken,null), response);
+        assertEquals(userAuthenticationResponse, response);
         verify(authenticationManager, times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
         verify(jwtTokenProvider, times(1)).generateToken(userDetails);
-        verify(resetLoginAttemptsService, times(1)).reset(request.email());
+        verify(resetLoginAttemptsService, times(1)).reset(request.getEmail());
     }
 
     @Test
@@ -73,7 +74,7 @@ class UserAuthenticationServiceTest {
 
         assertThrows(BadCredentialsException.class, () -> userAuthenticationService.authenticate(request));
 
-        verify(loginFailureHandler, times(1)).handle(request.email());
+        verify(loginFailureHandler, times(1)).handle(request.getEmail());
     }
 
     @Test
