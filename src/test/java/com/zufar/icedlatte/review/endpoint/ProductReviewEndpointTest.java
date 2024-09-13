@@ -16,6 +16,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static com.zufar.icedlatte.test.config.RestAssertion.assertRestApiBadRequestResponse;
@@ -100,6 +101,24 @@ class ProductReviewEndpointTest {
                 .body("productReviewId", notNullValue());
 
         removeReview(AFFOGATO_ID, response);
+    }
+
+    @Test
+    @DisplayName("Should return bad request with default pagination and sorting with page size for unauthorized user")
+    void shouldReturnBadRequestWithDefaultPaginationAndSortingWithPageSizeForAnonymous() {
+        // No authorization is required
+        specification = given()
+                .log().all(true)
+                .port(port)
+                .basePath(ProductReviewEndpoint.PRODUCT_REVIEW_URL)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON);
+
+
+        Response response = given(specification)
+                .get("/{productId}/reviews", AMERICANO_ID);
+
+        assertRestApiBadRequestResponse(response, FAILED_REVIEW_SCHEMA);
     }
 
     @Test
