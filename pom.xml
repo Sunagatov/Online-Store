@@ -71,7 +71,7 @@
         <!-- Logging and Serialization Dependencies Versions -->
         <slf4j-api.version>2.0.5</slf4j-api.version>
         <jackson-core.version>2.15.2</jackson-core.version>
-        <jackson-databind.version>2.15.2</jackson-databind.version>
+        <jackson-databind.version>2.18.0</jackson-databind.version>
         <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
 
