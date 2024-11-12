@@ -5,6 +5,7 @@ import com.zufar.icedlatte.common.exception.handler.ApiErrorResponseCreator;
 import com.zufar.icedlatte.common.exception.handler.ErrorDebugMessageCreator;
 import com.zufar.icedlatte.review.exception.DeniedProductReviewCreationException;
 import com.zufar.icedlatte.review.exception.DeniedProductReviewDeletionException;
+import com.zufar.icedlatte.review.exception.InvalidProductReviewTextException;
 import com.zufar.icedlatte.review.exception.EmptyProductReviewException;
 import com.zufar.icedlatte.review.exception.GetReviewsBadRequestException;
 import com.zufar.icedlatte.review.exception.ProductIdsAreNotMatchException;
@@ -30,6 +31,17 @@ public class ProductReviewExceptionHandler {
         ApiErrorResponse apiErrorResponse = apiErrorResponseCreator.buildResponse(exception, HttpStatus.BAD_REQUEST);
 
         log.warn("Handle unsupported review format exception: failed: message: {}, debugMessage: {}.",
+                apiErrorResponse.message(), errorDebugMessageCreator.buildErrorDebugMessage(exception));
+
+        return apiErrorResponse;
+    }
+
+    @ExceptionHandler(InvalidProductReviewTextException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handleInvalidProductReviewTextException(final InvalidProductReviewTextException exception) {
+        ApiErrorResponse apiErrorResponse = apiErrorResponseCreator.buildResponse(exception, HttpStatus.BAD_REQUEST);
+
+        log.warn("Handle invalid product review text exception: failed: message: {}, debugMessage: {}.",
                 apiErrorResponse.message(), errorDebugMessageCreator.buildErrorDebugMessage(exception));
 
         return apiErrorResponse;
